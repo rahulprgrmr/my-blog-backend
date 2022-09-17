@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('blogs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('created_by')->constrained('users');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('created_by')->constrained('users');
             $table->string('title');
+            $table->string('slug');
             $table->string('image')->nullable();
             $table->text('content');
             $table->timestamps();

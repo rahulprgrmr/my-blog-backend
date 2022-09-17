@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthenticatedTokenController;
+use App\Http\Controllers\API\BlogsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,5 @@ use App\Http\Controllers\API\AuthenticatedTokenController;
 Route::post('login', [AuthenticatedTokenController::class, 'create']);
 
 Route::middleware('auth:sanctum')->group(function() {
+    Route::apiResource('blogs', BlogsController::class);
 });

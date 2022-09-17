@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +19,14 @@ class UserSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         DB::table('users')->truncate();
-         \App\Models\User::factory()->create([
-             'name' => 'Admin',
-             'email' => 'rahulprgrmr@gmail.com',
-             'role_id' => 1
-         ]);
+        $role = Role::where('name', config('constants.ROLES.ADMIN'))->first();
+        if ($role) {
+            \App\Models\User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'rahulprgrmr@gmail.com',
+                'role_id' => $role->id
+            ]);
+        }
         Schema::enableForeignKeyConstraints();
     }
 }
