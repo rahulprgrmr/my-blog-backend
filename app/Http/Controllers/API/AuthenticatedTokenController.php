@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Response;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,42 +17,24 @@ class AuthenticatedTokenController extends Controller
 
         if (!$email || !$password)
         {
-            return response()->json([
-                'success' => false,
-                'error' => [
-                    'message' => 'Email/Password required'
-                ]
-            ]);
+            return Response::error('Email/Password required');
         }
 
         $user = User::where('email', $email)->first();
 
         if (!$user)
         {
-            return response()->json([
-                'success' => false,
-                'error' => [
-                    'message' => 'Invalid credentials!'
-                ]
-            ]);
+            return Response::error('Invalid credentials!');
         }
 
         if (!Hash::check($password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'error' => [
-                    'message' => 'Invalid credentials!'
-                ]
-            ]);
+            return Response::error('Invalid credentials!');
         }
             $token = $user->createToken('auth_token');
             $token = $token->plainTextToken;
 
-        return response()->json([
-            'success' => true,
-            'data'  => [
-                'token' => $token
-            ]
+        return Response::success('Logged In Successfully', [
+            'token' => $token
         ]);
     }
 }
