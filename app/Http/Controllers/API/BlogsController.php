@@ -4,7 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlogRequest;
+use App\Libraries\Response;
+use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BlogsController extends Controller
 {
@@ -26,7 +29,18 @@ class BlogsController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        //
+        $title = $request->post('title');
+        $content = $request->post('content');
+
+        $blog = new Blog();
+        $blog->title = $title;
+        $blog->slug = Str::slug($title);
+        $blog->content = $content;
+        $blog->created_by = auth()->user()->id;
+
+        $blog->save();
+
+        return Response::success("Blog created successfully", $blog);
     }
 
     /**

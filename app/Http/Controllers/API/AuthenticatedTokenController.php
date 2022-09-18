@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedTokenController extends Controller
 {
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $email = trim($request->post('email'));
         $password = trim($request->post('password'));
